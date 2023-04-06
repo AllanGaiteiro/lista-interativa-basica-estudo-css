@@ -21,33 +21,38 @@ const documentos = [
   { id: 20, nome: "Contrato social", status: "em-progresso" },
 ];
 
-var list = document.querySelector(".lista");
-var elementList = document.querySelectorAll(".documento");
+const list = document.querySelector(".lista");
 
 documentos
   .sort((a, b) => getStatusNumber(a) - getStatusNumber(b))
   .forEach((doc) => {
-    const li = document.createElement("li");
-    li.setAttribute("data-status", doc.status);
-    li.classList.add("documento");
-    li.innerHTML = renderizarDocumento(doc);
-    list.appendChild(li);
+    list.insertAdjacentHTML(
+      "beforeend",
+      `
+      <li class="documento" data-status="${doc.status}">
+        <div style="padding:10px">
+          <span>${doc.nome}</span>
+          <button class="expandir">Expandir</button>
+          <div class="documento-detalhe">
+            <p>ID: ${doc.id}</p>
+            <p>Status: ${doc.status}</p>
+          </div>
+        </div>
+      </li>
+    `
+    );
   });
-// Escuta por cliques nos botões de expandir
-const botoesExpandir = document.querySelectorAll(".expandir");
 
-botoesExpandir.forEach((botao) => {
-  botao.addEventListener("click", () => {
-    const documento = botao.parentNode;
+list.addEventListener("click", (event) => {
+  const botao = event.target.closest(".expandir");
+  if (botao) {
+    const documento = botao.closest(".documento");
     const detalhe = documento.querySelector(".documento-detalhe");
-    if (detalhe.style.display === "none") {
-      detalhe.style.display = "block";
-    } else {
-      detalhe.style.display = "none";
-    }
-  });
+    detalhe.style.display = detalhe.style.display === "none" ? "block" : "none";
+  }
 });
 
+const elementList = document.querySelectorAll(".documento");
 for (const element of elementList) {
   element.addEventListener("click", function () {
     this.classList.toggle("selecionado");
@@ -55,30 +60,11 @@ for (const element of elementList) {
 }
 
 function getStatusNumber(a) {
-  switch (a.status) {
-    case "concluido":
-      return 1;
-    case "em-progresso":
-      return 2;
-    case "pendente":
-      return 3;
-    case "cancelado":
-      return 4;
-    default:
-      break;
-  }
-}
-// Função que retorna o HTML para um item da lista de documentos
-function renderizarDocumento(documento) {
-  return `
-    <li class="documento expandir">
-    <div style="padding:10px">
-      <span>${documento.nome}</span>
-      <div class="documento-detalhe">
-        <p>ID: ${documento.id}</p>
-        <p>Status: ${documento.status}</p>
-      </div>
-        </div>
-    </li>
-  `;
+  const statusMap = {
+    concluido: 1,
+    "em-progresso": 2,
+    pendente: 3,
+    cancelado: 4,
+  };
+  return statusMap[a.status] || 0;
 }
