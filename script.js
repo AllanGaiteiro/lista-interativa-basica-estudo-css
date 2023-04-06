@@ -30,15 +30,30 @@ documentos
     const li = document.createElement("li");
     li.setAttribute("data-status", doc.status);
     li.classList.add("documento");
-    li.innerHTML = doc.nome;
+    li.innerHTML = renderizarDocumento(doc);
     list.appendChild(li);
   });
+// Escuta por cliques nos botões de expandir
+const botoesExpandir = document.querySelectorAll(".expandir");
+
+botoesExpandir.forEach((botao) => {
+  botao.addEventListener("click", () => {
+    const documento = botao.parentNode;
+    const detalhe = documento.querySelector(".documento-detalhe");
+    if (detalhe.style.display === "none") {
+      detalhe.style.display = "block";
+    } else {
+      detalhe.style.display = "none";
+    }
+  });
+});
 
 for (const element of elementList) {
   element.addEventListener("click", function () {
     this.classList.toggle("selecionado");
   });
 }
+
 function getStatusNumber(a) {
   switch (a.status) {
     case "concluido":
@@ -52,4 +67,18 @@ function getStatusNumber(a) {
     default:
       break;
   }
+}
+// Função que retorna o HTML para um item da lista de documentos
+function renderizarDocumento(documento) {
+  return `
+    <li class="documento expandir">
+    <div style="padding:10px">
+      <span>${documento.nome}</span>
+      <div class="documento-detalhe">
+        <p>ID: ${documento.id}</p>
+        <p>Status: ${documento.status}</p>
+      </div>
+        </div>
+    </li>
+  `;
 }
