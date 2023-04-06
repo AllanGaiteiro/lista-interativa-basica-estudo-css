@@ -24,16 +24,32 @@ const documentos = [
 var list = document.querySelector(".lista");
 var elementList = document.querySelectorAll(".documento");
 
-documentos.forEach((doc) => {
-  const li = document.createElement("li");
-  li.setAttribute("data-status", doc.status);
-  li.classList.add("documento");
-  li.innerHTML = doc.nome;
-  list.appendChild(li);
-});
+documentos
+  .sort((a, b) => getStatusNumber(a) - getStatusNumber(b))
+  .forEach((doc) => {
+    const li = document.createElement("li");
+    li.setAttribute("data-status", doc.status);
+    li.classList.add("documento");
+    li.innerHTML = doc.nome;
+    list.appendChild(li);
+  });
 
 for (const element of elementList) {
   element.addEventListener("click", function () {
     this.classList.toggle("selecionado");
   });
+}
+function getStatusNumber(a) {
+  switch (a.status) {
+    case "concluido":
+      return 1;
+    case "em-progresso":
+      return 2;
+    case "pendente":
+      return 3;
+    case "cancelado":
+      return 4;
+    default:
+      break;
+  }
 }
