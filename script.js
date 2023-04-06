@@ -29,10 +29,9 @@ documentos
     list.insertAdjacentHTML(
       "beforeend",
       `
-      <li class="documento" data-status="${doc.status}">
+      <li class="documento expandir" data-status="${doc.status}">
         <div style="padding:10px">
           <span>${doc.nome}</span>
-          <button class="expandir">Expandir</button>
           <div class="documento-detalhe">
             <p>ID: ${doc.id}</p>
             <p>Status: ${doc.status}</p>
