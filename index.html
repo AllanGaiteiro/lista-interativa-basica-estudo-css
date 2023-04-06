@@ -8,13 +8,38 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>Lista Interativa de Documentos</h1>
-        <ul class="lista">
-            <!-- lista de documentos-->
-        </ul>
-    </div>
+    <main class="container">
+        <section>
+            <h1>Lista Interativa de Documentos</h1>
+            <ul class="lista" id="lista-doc">
+                <!-- lista de documentos-->
+            </ul>
+        </section>
 
+        <section>
+            <h1>Lista Interativa de Documentos Agrupados</h1>
+            <!-- Divs de Grupo de Documentos -->
+            <div class="grupo-documentos" data-status="concluido">
+                <h2 class="titulo-grupo">Concluído</h2>
+                <ul class="lista" data-status="pendente"></ul>
+            </div>
+            <div class="grupo-documentos" data-status="em-andamento">
+                <h2 class="titulo-grupo">Em andamento</h2>
+                <ul class="lista" data-status="pendente"></ul>
+            </div>
+            <div class="grupo-documentos" data-status="pendente">
+                <h2 class="titulo-grupo">Pendente</h2>
+                <ul class="lista" data-status="pendente"></ul>
+            </div>
+            <div class="grupo-documentos" data-status="cancelado">
+                <h2 class="titulo-grupo">Cancelado</h2>
+                <ul class="lista" data-status="cancelado"></ul>
+            </div>
+        </section>
+
+
+
+    </main>
     <script src="script.js"></script>
 </body>
 

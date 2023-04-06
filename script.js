@@ -21,35 +21,43 @@ const documentos = [
   { id: 20, nome: "Contrato social", status: "em-progresso" },
 ];
 
-const list = document.querySelector(".lista");
+const list = document.querySelectorAll(".lista");
 
 documentos
   .sort((a, b) => getStatusNumber(a) - getStatusNumber(b))
   .forEach((doc) => {
-    list.insertAdjacentHTML(
-      "beforeend",
-      `
-      <li class="documento expandir" data-status="${doc.status}">
-        <div style="padding:10px">
-          <span>${doc.nome}</span>
-          <div class="documento-detalhe">
-            <p>ID: ${doc.id}</p>
-            <p>Status: ${doc.status}</p>
-          </div>
-        </div>
-      </li>
-    `
-    );
+    list.forEach((element) => {
+      const status = element.parentElement.getAttribute("data-status");
+      if (!status || status === doc.status) {
+        element.insertAdjacentHTML(
+          "beforeend",
+          `
+          <li class="documento expandir" data-status="${doc.status}">
+            <div style="padding:10px">
+              <span>${doc.nome}</span>
+              <div class="documento-detalhe">
+                <p>ID: ${doc.id}</p>
+                <p>Status: ${doc.status}</p>
+              </div>
+            </div>
+          </li>
+        `
+        );
+      }
+    });
   });
 
-list.addEventListener("click", (event) => {
-  const botao = event.target.closest(".expandir");
-  if (botao) {
-    const documento = botao.closest(".documento");
-    const detalhe = documento.querySelector(".documento-detalhe");
-    detalhe.style.display = detalhe.style.display === "none" ? "block" : "none";
-  }
-});
+list.forEach((element) =>
+  element.addEventListener("click", (event) => {
+    const botao = event.target.closest(".expandir");
+    if (botao) {
+      const documento = botao.closest(".documento");
+      const detalhe = documento.querySelector(".documento-detalhe");
+      detalhe.style.display =
+        detalhe.style.display === "none" ? "block" : "none";
+    }
+  })
+);
 
 const elementList = document.querySelectorAll(".documento");
 for (const element of elementList) {
@@ -67,3 +75,33 @@ function getStatusNumber(a) {
   };
   return statusMap[a.status] || 0;
 }
+
+const gruposDocumentos = document.querySelectorAll(".grupo-documentos");
+
+documentos.forEach((documento) => {
+  const status = documento.status;
+  const nomeDocumento = documento.nome;
+
+  // adicionar o elemento na div correta
+  const divDocumentos = document.querySelector(
+    `[data-status='${status}'] .documentos`
+  );
+  console.log(divDocumentos);
+  const elementoDocumento = document.createElement("div");
+  elementoDocumento.innerText = nomeDocumento;
+  if (elementoDocumento) {
+    console.log(elementoDocumento);
+    divDocumentos.appendChild(elementoDocumento);
+  }
+});
+
+// adicionando listeners aos titulos dos grupos para exibir e ocultar sub-divs
+gruposDocumentos.forEach((grupoDocumento) => {
+  const tituloGrupo = grupoDocumento.querySelector(".titulo-grupo");
+  const documentos = grupoDocumento.querySelector(".documentos");
+
+  tituloGrupo.addEventListener("click", () => {
+    documentos.style.display =
+      documentos.style.display === "none" ? "block" : "none";
+  });
+});

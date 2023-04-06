@@ -81,8 +81,14 @@
   transition: all 0.9s ease;
 }
 
-.documento,
-.expandir,
-.documento-detalhe {
-  transition: all 0.9s ease;
+.grupo-documentos {
+  margin-bottom: 20px;
+}
+
+.titulo-grupo {
+  cursor: pointer;
+}
+
+.documentos {
+  display: none;
 }
